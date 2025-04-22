@@ -73,7 +73,7 @@ func NewConfig(c *cli.Context, flags []cli.Flag) (*Config, error) {
 	// requires additional logic around when it's OK to combine requests and
 	// makes the semantics of a request unclear.
 	if config.Sharing.MPS != nil {
-		config.Sharing.MPS.FailRequestsGreaterThanOne = true
+		config.Sharing.MPS.FailRequestsGreaterThanOne = false
 	}
 
 	return config, nil
