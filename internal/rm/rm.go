@@ -86,7 +86,7 @@ func (r *resourceManager) ValidateRequest(ids AnnotatedIDs) error {
 		// deployments. If we do extend MPS to allow multiple devices to be
 		// requested, the MPS API will be extended separately from the
 		// time-slicing API.
-		if includesReplicas && numRequestedDevices > 1 {
+		if includesReplicas && numRequestedDevices > 1 && r.config.Sharing.ReplicatedResources().FailRequestsGreaterThanOne {
 			return fmt.Errorf("%w: maximum request size for shared resources is 1; found %d", errInvalidRequest, numRequestedDevices)
 		}
 	}

@@ -117,16 +117,18 @@ func (d *Daemon) Start() error {
 	}
 
 	for index, limit := range d.perDevicePinnedDeviceMemoryLimits() {
-		_, err := d.EchoPipeToControl(fmt.Sprintf("set_default_device_pinned_mem_limit %s %s", index, limit))
-		if err != nil {
-			return fmt.Errorf("error setting pinned memory limit for device %v: %w", index, err)
-		}
+		// _, err := d.EchoPipeToControl(fmt.Sprintf("set_default_device_pinned_mem_limit %s %s", index, limit))
+		// if err != nil {
+		// 	return fmt.Errorf("error setting pinned memory limit for device %v: %w", index, err)
+		// }
+		klog.Infof("perDevicePinnedDeviceMemoryLimits(): %s, %s", index, limit)
 	}
 	if threadPercentage := d.activeThreadPercentage(); threadPercentage != "" {
-		_, err := d.EchoPipeToControl(fmt.Sprintf("set_default_active_thread_percentage %s", threadPercentage))
-		if err != nil {
-			return fmt.Errorf("error setting active thread percentage: %w", err)
-		}
+		// _, err := d.EchoPipeToControl(fmt.Sprintf("set_default_active_thread_percentage %s", threadPercentage))
+		// if err != nil {
+		// 	return fmt.Errorf("error setting active thread percentage: %w", err)
+		// }
+		klog.Infof("activeThreadPercentage(): %s", threadPercentage)
 	}
 
 	statusFile, err := os.Create(d.startedFile())
@@ -271,10 +273,11 @@ func (m *Daemon) perDevicePinnedDeviceMemoryLimits() map[string]string {
 }
 
 func (m *Daemon) activeThreadPercentage() string {
+
 	if len(m.Devices()) == 0 {
 		return ""
 	}
 	replicasPerDevice := len(m.Devices()) / len(m.Devices().GetUUIDs())
-
+	klog.Infof("activeThreadPercentage(): %d", 100/replicasPerDevice)
 	return fmt.Sprintf("%d", 100/replicasPerDevice)
 }
